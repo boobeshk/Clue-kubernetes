@@ -6,6 +6,7 @@ metadata:
   labels:
     app: autofix-demo
 
+
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -30,6 +31,7 @@ spec:
           resources:
             limits:
               cpu: 200m
+              memory: 256Mi
             requests:
               cpu: 100m
           livenessProbe:
