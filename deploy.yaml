@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: test-cpu-stress
+  namespace: autofix-test
+  labels:
+    app: test-cpu-stress
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: test-cpu-stress
+  template:
+    metadata:
+      labels:
+        app: test-cpu-stress
+    spec:
+      containers:
+        - name: stress
+          image: containerstack/cpustress:latest
+          env:
+            - name: CPU_CORE
+              value: '2'
+          resources:
+            limits:
+              cpu: 100m
+              memory: 64Mi
+            requests:
+              cpu: 50m
+              memory: 32Mi
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 8080
+            initialDelaySeconds: 15
+            periodSeconds: 20
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /readyz
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            failureThreshold: 3
+          securityContext:
+            runAsNonRoot: true
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop:
+                - ALL
