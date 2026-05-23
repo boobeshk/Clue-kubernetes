@@ -1,0 +1,57 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: autofix-demo
+  namespace: default
+  labels:
+    app: autofix-demo
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: test-no-requests
+  namespace: autofix-demo
+  labels:
+    app: test-no-requests
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: test-no-requests
+  template:
+    metadata:
+      labels:
+        app: test-no-requests
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:1.25
+          resources:
+            limits:
+              cpu: 500m
+              memory: 256Mi
+            requests:
+              cpu: 100m
+              memory: 128Mi
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 8080
+            initialDelaySeconds: 15
+            periodSeconds: 20
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /readyz
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            failureThreshold: 3
+          securityContext:
+            runAsNonRoot: true
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop:
+                - ALL
