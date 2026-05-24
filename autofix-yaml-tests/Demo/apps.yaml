@@ -6,6 +6,7 @@ metadata:
     app: dev
   namespace: default
 
+
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -52,8 +53,8 @@ spec:
             periodSeconds: 3
           startupProbe:
             httpGet:
-              path: /
-              port: 80
+              path: /health
+              port: 8080
             initialDelaySeconds: 10
             periodSeconds: 10
             failureThreshold: 30
@@ -67,6 +68,7 @@ spec:
             runAsNonRoot: true
 
 ---
+
 apiVersion: v1
 kind: Service
 metadata:
@@ -82,7 +84,9 @@ spec:
       targetPort: 80
   type: ClusterIP
 
+
 ---
+
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
@@ -104,7 +108,9 @@ spec:
                 port:
                   number: 80
 
+
 ---
+
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
