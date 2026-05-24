@@ -1,1 +1,8 @@
 2026-05-23T20:50:37.736Z | NoStartupProbe | Deployment/test-cpu-throttle | autofix-demo
+2026-05-24T22:09:11.886Z | NoCPULimit | Deployment/nginx-app | dev
+2026-05-24T22:09:11.886Z | NoMemoryLimit | Deployment/nginx-app | dev
+2026-05-24T22:09:11.886Z | NoCPURequest | Deployment/nginx-app | dev
+2026-05-24T22:09:11.886Z | NoMemoryRequest | Deployment/nginx-app | dev
+2026-05-24T22:09:11.886Z | NoSecurityContext | Deployment/nginx-app | dev
+2026-05-24T22:09:11.886Z | WritableRootFS | Deployment/nginx-app | dev
+2026-05-24T22:09:11.886Z | NoStartupProbe | Deployment/nginx-app | dev
