@@ -6,7 +6,6 @@ metadata:
     app: dev
   namespace: default
 
-
 ---
 apiVersion: apps/v1
 kind: Deployment
