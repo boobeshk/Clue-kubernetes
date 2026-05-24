@@ -1,27 +1,10 @@
-# apiVersion: v1
-# kind: Namespace
-# metadata:
-#   name: dev
-
-# ---
-# apiVersion: v1
-# kind: ConfigMap
-# metadata:
-#   name: app-config
-#   namespace: dev
-# data:
-
-
 apiVersion: v1
 kind: Namespace
 metadata:
   name: dev
-
-
-
-
-
-
+  labels:
+    app: dev
+  namespace: default
 
 ---
 apiVersion: apps/v1
@@ -29,6 +12,8 @@ kind: Deployment
 metadata:
   name: nginx-app
   namespace: dev
+  labels:
+    app: nginx-app
 spec:
   replicas: 2
   selector:
@@ -39,11 +24,20 @@ spec:
       labels:
         app: nginx-app
     spec:
+      securityContext:
+        runAsNonRoot: true
       containers:
         - name: nginx
           image: nginx:1.25
           ports:
             - containerPort: 80
+          resources:
+            limits:
+              cpu: 500m
+              memory: 256Mi
+            requests:
+              cpu: 100m
+              memory: 128Mi
           livenessProbe:
             httpGet:
               path: /
@@ -56,84 +50,68 @@ spec:
               port: 80
             initialDelaySeconds: 5
             periodSeconds: 3
-          resources:
-            limits:
-              cpu: 500m
-              memory: 256Mi
-            requests:
-              cpu: 100m
-              memory: 128Mi
-          securityContext:
-            runAsNonRoot: true
-            runAsUser: 1000
-            readOnlyRootFilesystem: true
-            allowPrivilegeEscalation: false
           startupProbe:
             httpGet:
-              path: /health
-              port: 8080
+              path: /
+              port: 80
             initialDelaySeconds: 10
             periodSeconds: 10
             failureThreshold: 30
+          securityContext:
+            runAsUser: 1000
+            readOnlyRootFilesystem: true
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+            runAsNonRoot: true
 
 ---
-
 apiVersion: v1
 kind: Service
 metadata:
   name: nginx-service
   namespace: dev
-
+  labels:
+    app: nginx-service
 spec:
   selector:
     app: nginx-app
-
   ports:
     - port: 80
       targetPort: 80
-
   type: ClusterIP
 
-
-
-
-
-
-
 ---
-
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: nginx-ingress
   namespace: dev
-
+  labels:
+    app: nginx-ingress
 spec:
   ingressClassName: nginx
-
   rules:
     - host: nginx.local
-
       http:
         paths:
           - path: /
             pathType: Prefix
-
             backend:
               service:
                 name: nginx-service
                 port:
                   number: 80
 
-
-
-
-     ---
+---
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
   name: nginx-hpa
   namespace: dev
+  labels:
+    app: nginx-hpa
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
@@ -148,146 +126,3 @@ spec:
         target:
           type: Utilization
           averageUtilization: 70
-
-
-          
-                       
-#   APP_ENV: "dev"
-
-# ---
-# apiVersion: v1
-# kind: Secret
-# metadata:
-#   name: app-secret
-#  namespace: dev
-# type: Opaque
-# stringData:
-#   DB_USER: admin
-#   DB_PASS: password123
-
-# ---
-# apiVersion: apps/v1
-# kind: Deployment
-# metadata:
-#   name: nginx-app
-#   namespace: dev
-
-# spec:
-#   replicas: 2
-
-#   selector:
-#     matchLabels:
-#       app: nginx-app
-
-#   template:
-#     metadata:
-#       labels:
-#         app: nginx-app
-
-#     spec:
-#       containers:
-#         - name: nginx
-#           image: nginx:1.25
-
-#           ports:
-#             - containerPort: 80
-
-#           envFrom:
-#             - configMapRef:
-#                 name: app-config
-
-#             - secretRef:
-#                 name: app-secret
-
-#           resources:
-#             requests:
-#               cpu: "100m"
-#               # memory: "128Mi"
-
-#             limits:
-#               cpu: "500m"
-#               # memory: "512Mi"
-
-#           livenessProbe:
-#             httpGet:
-#               path: /
-#               port: 80
-#             initialDelaySeconds: 10
-#             periodSeconds: 5
-
-#           readinessProbe:
-#             httpGet:
-#               path: /
-#               port: 80
-#             initialDelaySeconds: 5
-#             periodSeconds: 3
-
-# ---
-# apiVersion: v1
-# kind: Service
-# metadata:
-#   name: nginx-service
-#   namespace: dev
-
-# spec:
-#   selector:
-#     app: nginx-app
-
-#   ports:
-#     - port: 80
-#       targetPort: 80
-
-#   type: ClusterIP
-
-# ---
-# apiVersion: networking.k8s.io/v1
-# kind: Ingress
-# metadata:
-#   name: nginx-ingress
-#   namespace: dev
-
-#   annotations:
-#     nginx.ingress.kubernetes.io/rewrite-target: /
-
-# spec:
-#   ingressClassName: nginx
-
-#   rules:
-#     - host: nginx.local
-
-#       http:
-#         paths:
-#           - path: /
-#             pathType: Prefix
-
-#             backend:
-#               service:
-#                 name: nginx-service
-#                 port:
-#                   number: 80
-
-# ---
-# apiVersion: autoscaling/v2
-# kind: HorizontalPodAutoscaler
-# metadata:
-#   name: nginx-hpa
-#   namespace: dev
-
-# spec:
-#   scaleTargetRef:
-#     apiVersion: apps/v1
-#     kind: Deployment
-#     name: nginx-app
-
-#   minReplicas: 2
-#   maxReplicas: 5
-
-#   metrics:
-#     - type: Resource
-
-#       resource:
-#         name: cpu
-
-#         target:
-#           type: Utilization
-#           averageUtilization: 70
