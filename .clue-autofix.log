@@ -22,3 +22,4 @@
 2026-05-27T12:05:05.544Z | NoLivenessProbe | Deployment/nginx-app | default
 2026-05-27T12:05:05.544Z | NoReadinessProbe | Deployment/nginx-app | default
 2026-05-27T12:05:05.544Z | SingleReplica | Deployment/nginx-app | default
+2026-05-27T13:06:26.468Z | MissingAppLabel | Service/demoo-nginx | default

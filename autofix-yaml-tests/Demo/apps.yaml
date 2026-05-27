@@ -5,11 +5,8 @@ metadata:
   labels:
     app: dev
   namespace: default
-spec:
-  replicas: 2
-
+spec: {}
 ---
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -70,8 +67,6 @@ spec:
               drop:
                 - ALL
             runAsNonRoot: true
-
-
 ---
 apiVersion: v1
 kind: Service
@@ -87,8 +82,6 @@ spec:
     - port: 80
       targetPort: 80
   type: ClusterIP
-  replicas: 2
-
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
@@ -110,8 +103,6 @@ spec:
                 name: nginx-service
                 port:
                   number: 80
-  replicas: 2
-
 ---
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
@@ -134,4 +125,3 @@ spec:
         target:
           type: Utilization
           averageUtilization: 70
-  replicas: 2
