@@ -48,4 +48,4 @@ spec:
     - protocol: TCP
       targetPort: 5000
       port: 5000
-  type: Nodeip
+  type: NodePort
