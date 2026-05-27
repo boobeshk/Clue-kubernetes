@@ -5,3 +5,11 @@
 2026-05-27T14:23:11.000Z | MissingAppLabel | Service/hello-world-service | default
 2026-05-27T14:23:22.302Z | MissingAppLabel | Deployment/hello-world-deployment | default
 2026-05-27T14:23:22.302Z | SingleReplica | Deployment/hello-world-deployment | default
+2026-05-27T14:24:04.452Z | NoCPULimit | Deployment/hello-world | default
+2026-05-27T14:24:04.453Z | NoMemoryLimit | Deployment/hello-world | default
+2026-05-27T14:24:04.453Z | NoCPURequest | Deployment/hello-world | default
+2026-05-27T14:24:04.453Z | NoMemoryRequest | Deployment/hello-world | default
+2026-05-27T14:24:04.453Z | NoSecurityContext | Deployment/hello-world | default
+2026-05-27T14:24:04.453Z | WritableRootFS | Deployment/hello-world | default
+2026-05-27T14:24:04.454Z | NoLivenessProbe | Deployment/hello-world | default
+2026-05-27T14:24:04.454Z | NoReadinessProbe | Deployment/hello-world | default
