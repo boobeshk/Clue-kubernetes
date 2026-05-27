@@ -3,3 +3,5 @@
 2026-05-23T21:05:06.421Z | NoMemoryRequest | Deployment/test-no-memory-limit | autofix-demo
 2026-05-23T21:06:08.977Z | NoStartupProbe | Deployment/test-no-memory-limit | autofix-demo
 2026-05-27T14:23:11.000Z | MissingAppLabel | Service/hello-world-service | default
+2026-05-27T14:23:22.302Z | MissingAppLabel | Deployment/hello-world-deployment | default
+2026-05-27T14:23:22.302Z | SingleReplica | Deployment/hello-world-deployment | default
