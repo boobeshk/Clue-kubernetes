@@ -13,3 +13,12 @@
 2026-05-24T22:52:27.995Z | NoSecurityContext | Deployment/nginx-app | dev
 2026-05-24T22:52:27.995Z | WritableRootFS | Deployment/nginx-app | dev
 2026-05-24T22:52:27.995Z | NoStartupProbe | Deployment/nginx-app | dev
+2026-05-27T12:05:05.544Z | NoCPULimit | Deployment/nginx-app | default
+2026-05-27T12:05:05.544Z | NoMemoryLimit | Deployment/nginx-app | default
+2026-05-27T12:05:05.544Z | NoCPURequest | Deployment/nginx-app | default
+2026-05-27T12:05:05.544Z | NoMemoryRequest | Deployment/nginx-app | default
+2026-05-27T12:05:05.544Z | NoSecurityContext | Deployment/nginx-app | default
+2026-05-27T12:05:05.544Z | WritableRootFS | Deployment/nginx-app | default
+2026-05-27T12:05:05.544Z | NoLivenessProbe | Deployment/nginx-app | default
+2026-05-27T12:05:05.544Z | NoReadinessProbe | Deployment/nginx-app | default
+2026-05-27T12:05:05.544Z | SingleReplica | Deployment/nginx-app | default
