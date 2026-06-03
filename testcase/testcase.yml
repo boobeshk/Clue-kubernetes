@@ -77,3 +77,14 @@ spec:
   policyTypes:
     - Ingress
     - Egress
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: clue-autofix-demo-pdb
+  namespace: clue-test
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app: clue-autofix-demo
