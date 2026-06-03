@@ -5,9 +5,6 @@ metadata:
   namespace: clue-test
   labels:
     app: clue-autofix-demo
-    app.kubernetes.io/name: clue-autofix-demo
-    app.kubernetes.io/instance: clue-autofix-demo
-    app.kubernetes.io/managed-by: clue
 spec:
   replicas: 2
   selector:
@@ -17,59 +14,21 @@ spec:
     metadata:
       labels:
         app: clue-autofix-demo
-        app.kubernetes.io/name: clue-autofix-demo
-        app.kubernetes.io/instance: clue-autofix-demo
-        app.kubernetes.io/managed-by: clue
     spec:
       containers:
         - name: demo
-          image: nginx:latest
+          image: nginx:1.27.0
           ports:
             - containerPort: 80
           securityContext:
-            privileged: false
-            allowPrivilegeEscalation: false
-            capabilities:
-              drop:
-                - ALL
-            runAsNonRoot: true
-            runAsUser: 1000
-            readOnlyRootFilesystem: true
-          readinessProbe:
-            tcpSocket:
-              port: 80
-            initialDelaySeconds: 5
-            periodSeconds: 10
-          livenessProbe:
-            tcpSocket:
-              port: 80
-            initialDelaySeconds: 15
-            periodSeconds: 20
-          resources:
-            requests:
-              cpu: 100m
-              memory: 128Mi
-            limits:
-              cpu: 500m
-              memory: 256Mi
-          imagePullPolicy: Always
-          startupProbe:
-            tcpSocket:
-              port: 80
-            initialDelaySeconds: 10
-            periodSeconds: 10
-            failureThreshold: 30
+            privileged: true
+            allowPrivilegeEscalation: true
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: clue-autofix-demo
   namespace: clue-test
-  labels:
-    app: clue-autofix-demo
-    app.kubernetes.io/name: clue-autofix-demo
-    app.kubernetes.io/instance: clue-autofix-demo
-    app.kubernetes.io/managed-by: clue
 spec:
   selector:
     app: clue-autofix-demo
