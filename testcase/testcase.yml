@@ -1,104 +1,30 @@
-apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: clue-autofix-demo
   namespace: clue-test
-  labels:
-    app: clue-autofix-demo
-    app.kubernetes.io/name: clue-autofix-demo
-    app.kubernetes.io/instance: clue-autofix-demo
-    app.kubernetes.io/managed-by: clue
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
-      app: clue-autofix-demo
+      app: ai-fix-demo
   template:
     metadata:
       labels:
-        app: clue-autofix-demo
-        app.kubernetes.io/name: clue-autofix-demo
-        app.kubernetes.io/instance: clue-autofix-demo
-        app.kubernetes.io/managed-by: clue
+        app: ai-fix-demo
     spec:
       containers:
         - name: demo
-          image: nginx:latest
+          image: nginx:1.25
           ports:
             - containerPort: 80
-          securityContext:
-            privileged: true
-            allowPrivilegeEscalation: true
-            readOnlyRootFilesystem: true
-          startupProbe:
-            tcpSocket:
-              port: 80
-            initialDelaySeconds: 10
-            periodSeconds: 10
-            failureThreshold: 30
-          imagePullPolicy: Always
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: clue-autofix-demo
+  name: ai-fix-demo
   namespace: clue-test
-  labels:
-    app: clue-autofix-demo
-    app.kubernetes.io/name: clue-autofix-demo
-    app.kubernetes.io/instance: clue-autofix-demo
-    app.kubernetes.io/managed-by: clue
 spec:
   selector:
-    app: clue-autofix-demo
+    app: ai-fix-demo
   ports:
     - port: 80
       targetPort: 80
-  type: ClusterIP
----
-apiVersion: autoscaling/v2
-kind: HorizontalPodAutoscaler
-metadata:
-  name: clue-autofix-demo-hpa
-  namespace: clue-test
-  labels:
-    app: clue-autofix-demo-hpa
-    app.kubernetes.io/name: clue-autofix-demo-hpa
-    app.kubernetes.io/instance: clue-autofix-demo-hpa
-    app.kubernetes.io/managed-by: clue
-spec:
-  scaleTargetRef:
-    apiVersion: apps/v1
-    kind: Deployment
-    name: clue-autofix-demo
-  minReplicas: 2
-  maxReplicas: 5
-  metrics:
-    - type: Resource
-      resource:
-        name: cpu
-        target:
-          type: Utilization
-          averageUtilization: 70
----
-apiVersion: networking.k8s.io/v1
-kind: NetworkPolicy
-metadata:
-  name: default-deny-all
-  namespace: clue-test
-spec:
-  podSelector: {}
-  policyTypes:
-    - Ingress
-    - Egress
----
-apiVersion: policy/v1
-kind: PodDisruptionBudget
-metadata:
-  name: clue-autofix-demo-pdb
-  namespace: clue-test
-spec:
-  minAvailable: 1
-  selector:
-    matchLabels:
-      app: clue-autofix-demo
