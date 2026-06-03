@@ -1,3 +1,9 @@
+# AutoFix test manifest — intentionally violates several catalog rules.
+# Expected detections: SEC-001 (privileged), SEC-003 (allowPrivilegeEscalation),
+# SEC-002 (runAsNonRoot missing), SEC-011 (readOnlyRootFilesystem missing),
+# SEC-012 (seccompProfile missing), SEC-013 (capabilities.drop missing),
+# SEC-015 (image :latest), RES-001..004 (requests/limits missing),
+# LBL-002..004 (recommended labels missing). Service is intentionally CLEAN.
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -5,9 +11,6 @@ metadata:
   namespace: clue-test
   labels:
     app: clue-autofix-demo
-    app.kubernetes.io/name: clue-autofix-demo
-    app.kubernetes.io/instance: clue-autofix-demo
-    app.kubernetes.io/managed-by: clue
 spec:
   replicas: 2
   selector:
@@ -17,69 +20,28 @@ spec:
     metadata:
       labels:
         app: clue-autofix-demo
-        app.kubernetes.io/name: clue-autofix-demo
-        app.kubernetes.io/instance: clue-autofix-demo
-        app.kubernetes.io/managed-by: clue
     spec:
       containers:
         - name: demo
-          image: busybox:1.36
-          command:
-            - sh
-            - '-c'
-            - echo starting; sleep 3; exit 1
+          image: nginx:latest          # SEC-015: pinned tag missing
           ports:
-            - containerPort: 8080
+            - containerPort: 80
+          # RES-001..004: no resources block at all
           securityContext:
-            privileged: false
-            allowPrivilegeEscalation: false
-            readOnlyRootFilesystem: true
-            capabilities:
-              drop:
-                - ALL
-            runAsNonRoot: true
-            runAsUser: 1000
-          startupProbe:
-            tcpSocket:
-              port: 8080
-            initialDelaySeconds: 10
-            periodSeconds: 10
-            failureThreshold: 30
-          imagePullPolicy: IfNotPresent
-          readinessProbe:
-            tcpSocket:
-              port: 8080
-            initialDelaySeconds: 5
-            periodSeconds: 10
-          livenessProbe:
-            tcpSocket:
-              port: 8080
-            initialDelaySeconds: 15
-            periodSeconds: 20
-          resources:
-            requests:
-              cpu: 100m
-              memory: 128Mi
-            limits:
-              cpu: 500m
-              memory: 256Mi
+            privileged: true            # SEC-001
+            allowPrivilegeEscalation: true   # SEC-003
+            # SEC-002 runAsNonRoot, SEC-011 readOnlyRootFilesystem,
+            # SEC-012 seccompProfile, SEC-013 capabilities.drop all missing
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: clue-autofix-demo
   namespace: clue-test
-  labels:
-    app: clue-autofix-demo
-    app.kubernetes.io/name: clue-autofix-demo
-    app.kubernetes.io/instance: clue-autofix-demo
-    app.kubernetes.io/managed-by: clue
 spec:
   selector:
-    app: clue-autofix-demo
-    app.kubernetes.io/name: clue-autofix-demo
-    app.kubernetes.io/instance: clue-autofix-demo
-    app.kubernetes.io/managed-by: clue
+    app: clue-autofix-demo          # matches pod labels -> no NoEndpoints issue
   ports:
     - port: 80
-      targetPort: 8080
+      targetPort: 80
+  type: ClusterIP
