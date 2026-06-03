@@ -28,6 +28,7 @@ spec:
                 - ALL
             runAsNonRoot: true
             runAsUser: 1000
+            readOnlyRootFilesystem: true
           readinessProbe:
             tcpSocket:
               port: 80
