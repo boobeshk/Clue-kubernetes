@@ -51,6 +51,11 @@ kind: Service
 metadata:
   name: clue-autofix-demo
   namespace: clue-test
+  labels:
+    app: clue-autofix-demo
+    app.kubernetes.io/name: clue-autofix-demo
+    app.kubernetes.io/instance: clue-autofix-demo
+    app.kubernetes.io/managed-by: clue
 spec:
   selector:
     app: clue-autofix-demo
