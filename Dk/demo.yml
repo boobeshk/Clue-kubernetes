@@ -29,6 +29,13 @@ spec:
             runAsNonRoot: true
             runAsUser: 1001
             readOnlyRootFilesystem: true
+          volumeMounts:
+            - name: nginx-cache
+              mountPath: /var/cache/nginx
+            - name: nginx-run
+              mountPath: /var/run
+            - name: nginx-tmp
+              mountPath: /tmp
           readinessProbe:
             tcpSocket:
               port: 80
@@ -46,6 +53,13 @@ spec:
             limits:
               cpu: 500m
               memory: 256Mi
+      volumes:
+        - name: nginx-cache
+          emptyDir: {}
+        - name: nginx-run
+          emptyDir: {}
+        - name: nginx-tmp
+          emptyDir: {}
 ---
 apiVersion: v1
 kind: Service
