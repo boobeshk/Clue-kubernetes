@@ -77,6 +77,9 @@ metadata:
 spec:
   selector:
     app: clue-autofix-demo
+    app.kubernetes.io/name: clue-autofix-demo
+    app.kubernetes.io/instance: clue-autofix-demo
+    app.kubernetes.io/managed-by: clue
   ports:
     - port: 80
       targetPort: 8080
