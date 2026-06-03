@@ -1,8 +1,10 @@
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   namespace: clue-test
   labels:
     app: doc-1
+  name: doc-1
 spec:
   replicas: 2
   selector:
