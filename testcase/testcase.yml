@@ -1,8 +1,10 @@
 kind: Deployment
 metadata:
   namespace: clue-test
+  labels:
+    app: doc-1
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: ai-fix-demo
@@ -16,12 +18,43 @@ spec:
           image: nginx:1.25
           ports:
             - containerPort: 80
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 256Mi
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 8080
+            initialDelaySeconds: 15
+            periodSeconds: 20
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /readyz
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            failureThreshold: 3
+          securityContext:
+            runAsNonRoot: true
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop:
+                - ALL
+
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: ai-fix-demo
   namespace: clue-test
+  labels:
+    app: ai-fix-demo
 spec:
   selector:
     app: ai-fix-demo
