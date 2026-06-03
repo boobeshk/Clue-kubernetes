@@ -31,7 +31,7 @@ metadata:
   namespace: clue-test
 spec:
   selector:
-    app: wrong-selector
+    app: clue-autofix-demo
   ports:
     - port: 80
       targetPort: 80
