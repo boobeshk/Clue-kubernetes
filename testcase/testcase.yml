@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: clue-autofix-demo
+  namespace: clue-test
+  labels:
+    app: clue-autofix-demo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: clue-autofix-demo
+  template:
+    metadata:
+      labels:
+        app: clue-autofix-demo
+    spec:
+      containers:
+        - name: demo
+          image: nginx:latest
+          ports:
+            - containerPort: 80
+          securityContext:
+            privileged: true
+            allowPrivilegeEscalation: true
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: clue-autofix-demo
+  namespace: clue-test
+spec:
+  selector:
+    app: wrong-selector
+  ports:
+    - port: 80
+      targetPort: 80
+  type: ClusterIP
