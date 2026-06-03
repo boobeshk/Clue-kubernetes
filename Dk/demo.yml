@@ -21,8 +21,11 @@ spec:
           ports:
             - containerPort: 80
           securityContext:
-            privileged: true
-            allowPrivilegeEscalation: true
+            privileged: false
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
           readinessProbe:
             tcpSocket:
               port: 80
