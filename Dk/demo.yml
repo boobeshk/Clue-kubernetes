@@ -31,9 +31,12 @@ spec:
           ports:
             - containerPort: 8080
           securityContext:
-            privileged: true
-            allowPrivilegeEscalation: true
+            privileged: false
+            allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
+            capabilities:
+              drop:
+                - ALL
           startupProbe:
             tcpSocket:
               port: 8080
