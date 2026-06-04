@@ -48,6 +48,12 @@ spec:
             capabilities:
               drop:
                 - ALL
+          startupProbe:
+            tcpSocket:
+              port: 80
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            failureThreshold: 30
 ---
 apiVersion: v1
 kind: Service
