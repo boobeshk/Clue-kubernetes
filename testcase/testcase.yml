@@ -75,6 +75,9 @@ metadata:
 spec:
   selector:
     app: ai-fix-demo
+    app.kubernetes.io/name: doc-1
+    app.kubernetes.io/instance: doc-1
+    app.kubernetes.io/managed-by: clue
   ports:
     - port: 80
       targetPort: 80
