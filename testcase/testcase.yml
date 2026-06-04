@@ -2,10 +2,10 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   namespace: clue-test
-  labels:
-    app: doc-1
-    app.kubernetes.io/name: doc-1
   name: doc-1
+  labels:
+    app: ai-fix-demo
+    app.kubernetes.io/name: doc-1
 spec:
   replicas: 2
   selector:
@@ -32,31 +32,29 @@ spec:
               memory: 256Mi
           livenessProbe:
             httpGet:
-              path: /healthz
-              port: 8080
+              path: /
+              port: 80
             initialDelaySeconds: 15
             periodSeconds: 20
             failureThreshold: 3
           readinessProbe:
             httpGet:
-              path: /readyz
-              port: 8080
+              path: /
+              port: 80
             initialDelaySeconds: 5
             periodSeconds: 10
             failureThreshold: 3
-          securityContext:
-            runAsNonRoot: true
-            allowPrivilegeEscalation: true
-            readOnlyRootFilesystem: true
-            capabilities:
-              drop:
-                - ALL
           startupProbe:
             tcpSocket:
               port: 80
             initialDelaySeconds: 10
             periodSeconds: 10
             failureThreshold: 30
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
           imagePullPolicy: IfNotPresent
 ---
 apiVersion: v1
@@ -66,8 +64,6 @@ metadata:
   namespace: clue-test
   labels:
     app: ai-fix-demo
-    app.kubernetes.io/name: ai-fix-demo
-    app.kubernetes.io/managed-by: clue
 spec:
   selector:
     app: ai-fix-demo
