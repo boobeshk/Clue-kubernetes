@@ -3,6 +3,11 @@ kind: Deployment
 metadata:
   name: hello-world-deployment
   namespace: clue-test
+  labels:
+    app: hello-world-deployment
+    app.kubernetes.io/name: hello-world-deployment
+    app.kubernetes.io/instance: hello-world-deployment
+    app.kubernetes.io/managed-by: clue
 spec:
   selector:
     matchLabels:
@@ -12,13 +17,16 @@ spec:
     metadata:
       labels:
         app: hello-world
+        app.kubernetes.io/name: hello-world-deployment
+        app.kubernetes.io/instance: hello-world-deployment
+        app.kubernetes.io/managed-by: clue
     spec:
       containers:
         - name: hello-world
           image: hashicorp/http-echo
           args:
-            - "-text=Hello, World!"
-            - "-listen=:5000"
+            - '-text=Hello, World!'
+            - '-listen=:5000'
           ports:
             - containerPort: 5000
 ---
