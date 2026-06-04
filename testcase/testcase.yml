@@ -57,6 +57,7 @@ spec:
             runAsUser: 1000
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
+          imagePullPolicy: Always
 ---
 apiVersion: v1
 kind: Service
