@@ -4,6 +4,9 @@ metadata:
   namespace: clue-test
   labels:
     app: doc-1
+    app.kubernetes.io/name: doc-1
+    app.kubernetes.io/instance: doc-1
+    app.kubernetes.io/managed-by: clue
   name: doc-1
 spec:
   replicas: 2
@@ -14,6 +17,9 @@ spec:
     metadata:
       labels:
         app: ai-fix-demo
+        app.kubernetes.io/name: doc-1
+        app.kubernetes.io/instance: doc-1
+        app.kubernetes.io/managed-by: clue
     spec:
       containers:
         - name: demo
