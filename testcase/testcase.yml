@@ -29,6 +29,11 @@ spec:
             - '-listen=:5000'
           ports:
             - containerPort: 5000
+          readinessProbe:
+            tcpSocket:
+              port: 5000
+            initialDelaySeconds: 5
+            periodSeconds: 10
 ---
 apiVersion: v1
 kind: Service
