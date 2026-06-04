@@ -5,8 +5,6 @@ metadata:
   labels:
     app: doc-1
     app.kubernetes.io/name: doc-1
-    app.kubernetes.io/instance: doc-1
-    app.kubernetes.io/managed-by: clue
   name: doc-1
 spec:
   replicas: 2
@@ -18,7 +16,6 @@ spec:
       labels:
         app: ai-fix-demo
         app.kubernetes.io/name: doc-1
-        app.kubernetes.io/instance: doc-1
         app.kubernetes.io/managed-by: clue
     spec:
       containers:
@@ -70,13 +67,11 @@ metadata:
   labels:
     app: ai-fix-demo
     app.kubernetes.io/name: ai-fix-demo
-    app.kubernetes.io/instance: ai-fix-demo
     app.kubernetes.io/managed-by: clue
 spec:
   selector:
     app: ai-fix-demo
     app.kubernetes.io/name: doc-1
-    app.kubernetes.io/instance: doc-1
     app.kubernetes.io/managed-by: clue
   ports:
     - port: 80
