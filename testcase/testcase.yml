@@ -1,89 +1,37 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  name: hello-world-deployment
   namespace: clue-test
-  name: doc-1
-  labels:
-    app: ai-fix-demo
-    app.kubernetes.io/name: doc-1
 spec:
-  replicas: 2
   selector:
     matchLabels:
-      app: ai-fix-demo
+      app: hello-world
+  replicas: 1
   template:
     metadata:
       labels:
-        app: ai-fix-demo
-        app.kubernetes.io/name: doc-1
-        app.kubernetes.io/managed-by: clue
+        app: hello-world
     spec:
       containers:
-        - name: demo
-          image: nginx:1.25
-          imagePullPolicy: IfNotPresent
-
+        - name: hello-world
+          image: hashicorp/http-echo
+          args:
+            - "-text=Hello, World!"
+            - "-listen=:5000"
           ports:
-            - containerPort: 80
-
-          resources:
-            requests:
-              cpu: 100m
-              memory: 128Mi
-            limits:
-              cpu: 500m
-              memory: 256Mi
-
-          livenessProbe:
-            httpGet:
-              path: /
-              port: 80
-            initialDelaySeconds: 15
-            periodSeconds: 20
-            timeoutSeconds: 5
-            failureThreshold: 3
-
-          readinessProbe:
-            httpGet:
-              path: /
-              port: 80
-            initialDelaySeconds: 5
-            periodSeconds: 10
-            timeoutSeconds: 5
-            failureThreshold: 3
-
-          startupProbe:
-            tcpSocket:
-              port: 80
-            initialDelaySeconds: 10
-            periodSeconds: 10
-            failureThreshold: 30
-
-          securityContext:
-            allowPrivilegeEscalation: false
-            capabilities:
-              drop:
-                - ALL
-              add:
-                - NET_BIND_SERVICE
-
+            - containerPort: 5000
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: ai-fix-demo
+  name: hello-world-service
   namespace: clue-test
-  labels:
-    app: ai-fix-demo
-    app.kubernetes.io/name: doc-1
 spec:
   selector:
-    app: ai-fix-demo
-    app.kubernetes.io/name: doc-1
-    app.kubernetes.io/managed-by: clue
-
+    app: hello-world
   ports:
-    - name: http
-      port: 80
-      targetPort: 80
-  type: ClusterIP
+    - protocol: TCP
+      port: 5000
+      targetPort: 5000
+  type: NodePort
