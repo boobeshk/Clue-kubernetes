@@ -50,11 +50,13 @@ spec:
             initialDelaySeconds: 10
             periodSeconds: 10
             failureThreshold: 30
-          securityContext:
-            allowPrivilegeEscalation: false
-            capabilities:
-              drop:
-                - ALL
+securityContext:
+  allowPrivilegeEscalation: false
+  capabilities:
+    drop:
+      - ALL
+    add:
+      - NET_BIND_SERVICE
           imagePullPolicy: IfNotPresent
 ---
 apiVersion: v1
