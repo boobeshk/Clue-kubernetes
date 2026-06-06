@@ -72,6 +72,9 @@ metadata:
 spec:
   selector:
     app: hello-world
+    app.kubernetes.io/name: hello-world-deployment
+    app.kubernetes.io/instance: hello-world-deployment
+    app.kubernetes.io/managed-by: clue
   ports:
     - protocol: TCP
       port: 5000
