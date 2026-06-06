@@ -64,6 +64,11 @@ kind: Service
 metadata:
   name: hello-world-service
   namespace: clue-test
+  labels:
+    app: hello-world-service
+    app.kubernetes.io/name: hello-world-service
+    app.kubernetes.io/instance: hello-world-service
+    app.kubernetes.io/managed-by: clue
 spec:
   selector:
     app: hello-world
