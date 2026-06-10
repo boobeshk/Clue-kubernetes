@@ -6,6 +6,9 @@ metadata:
   labels:
     app: hello-world
     app.kubernetes.io/name: hello-world
+    owner: platform
+    team: platform
+    environment: dev
 spec:
   selector:
     matchLabels:
@@ -48,6 +51,7 @@ spec:
               port: 5000
             initialDelaySeconds: 5
             periodSeconds: 10
+          imagePullPolicy: Always
   replicas: 2
 imagePullPolicy: Always
 Add environment label: dev/qa/prod.
@@ -69,6 +73,10 @@ metadata:
   namespace: devtest
   labels:
     app: hello-world
+    app.kubernetes.io/name: hello-world
+    owner: platform
+    team: platform
+    environment: dev
 spec:
   selector:
     app: hello-world
