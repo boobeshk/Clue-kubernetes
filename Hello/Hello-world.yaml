@@ -59,18 +59,6 @@ spec:
             periodSeconds: 10
             failureThreshold: 30
   replicas: 2
-imagePullPolicy: Always
-Add environment label: dev/qa/prod.
-labels:
-  owner: platform
-  team: platform
-  environment: dev
-startupProbe:
-  tcpSocket:
-    port: 5000
-  initialDelaySeconds: 10
-  periodSeconds: 10
-  failureThreshold: 30
 ---
 apiVersion: v1
 kind: Service
@@ -90,8 +78,3 @@ spec:
     - port: 80
       targetPort: 5000
   type: ClusterIP
-Add environment label: dev/qa/prod.
-labels:
-  owner: platform
-  team: platform
-  environment: dev
