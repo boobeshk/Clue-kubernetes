@@ -52,6 +52,12 @@ spec:
             initialDelaySeconds: 5
             periodSeconds: 10
           imagePullPolicy: Always
+          startupProbe:
+            tcpSocket:
+              port: 5000
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            failureThreshold: 30
   replicas: 2
 imagePullPolicy: Always
 Add environment label: dev/qa/prod.
