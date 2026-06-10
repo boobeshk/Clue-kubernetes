@@ -5,6 +5,7 @@ metadata:
   namespace: devtest
   labels:
     app: hello-world
+    app.kubernetes.io/name: hello-world
 spec:
   selector:
     matchLabels:
@@ -54,6 +55,12 @@ labels:
   owner: platform
   team: platform
   environment: dev
+startupProbe:
+  tcpSocket:
+    port: 5000
+  initialDelaySeconds: 10
+  periodSeconds: 10
+  failureThreshold: 30
 ---
 apiVersion: v1
 kind: Service
