@@ -48,12 +48,20 @@ spec:
             initialDelaySeconds: 5
             periodSeconds: 10
   replicas: 2
+imagePullPolicy: Always
+Add environment label: dev/qa/prod.
+labels:
+  owner: platform
+  team: platform
+  environment: dev
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: hello-world-service
   namespace: devtest
+  labels:
+    app: hello-world
 spec:
   selector:
     app: hello-world
@@ -61,3 +69,8 @@ spec:
     - port: 80
       targetPort: 5000
   type: ClusterIP
+Add environment label: dev/qa/prod.
+labels:
+  owner: platform
+  team: platform
+  environment: dev
