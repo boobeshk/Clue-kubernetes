@@ -8,6 +8,9 @@ metadata:
     app.kubernetes.io/name: hello-world-deployment
     app.kubernetes.io/instance: hello-world-deployment
     app.kubernetes.io/managed-by: clue
+    owner: platform
+    team: platform
+    environment: dev
 spec:
   selector:
     matchLabels:
@@ -69,6 +72,9 @@ metadata:
     app.kubernetes.io/name: hello-world-service
     app.kubernetes.io/instance: hello-world-service
     app.kubernetes.io/managed-by: clue
+    owner: platform
+    team: platform
+    environment: dev
 spec:
   selector:
     app: hello-world
