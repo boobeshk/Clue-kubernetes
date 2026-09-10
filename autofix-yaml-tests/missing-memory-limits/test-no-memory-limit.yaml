@@ -5,6 +5,9 @@ metadata:
   namespace: default
   labels:
     app: autofix-demo
+    owner: platform
+    team: platform
+    environment: dev
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -13,6 +16,9 @@ metadata:
   namespace: autofix-demo
   labels:
     app: test-no-memory-limit
+    owner: platform
+    team: platform
+    environment: dev
 spec:
   replicas: 2
   selector:
