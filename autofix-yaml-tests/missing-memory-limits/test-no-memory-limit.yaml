@@ -5,10 +5,6 @@ metadata:
   namespace: default
   labels:
     app: autofix-demo
-
-
-
-
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -65,3 +61,7 @@ spec:
             initialDelaySeconds: 10
             periodSeconds: 10
             failureThreshold: 30
+      template:
+        spec:
+          imagePullSecrets:
+            - name: regcred
