@@ -42,19 +42,15 @@ spec:
               cpu: 100m
               memory: 128Mi
           livenessProbe:
-            httpGet:
-              path: /healthz
+            tcpSocket:
               port: 8080
             initialDelaySeconds: 15
             periodSeconds: 20
-            failureThreshold: 3
           readinessProbe:
-            httpGet:
-              path: /readyz
+            tcpSocket:
               port: 8080
             initialDelaySeconds: 5
             periodSeconds: 10
-            failureThreshold: 3
           securityContext:
             runAsNonRoot: true
             allowPrivilegeEscalation: false
@@ -64,8 +60,7 @@ spec:
                 - ALL
             runAsUser: 1000
           startupProbe:
-            httpGet:
-              path: /health
+            tcpSocket:
               port: 8080
             initialDelaySeconds: 10
             periodSeconds: 10
