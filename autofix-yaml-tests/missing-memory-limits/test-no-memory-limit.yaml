@@ -8,6 +8,7 @@ metadata:
     owner: platform
     team: platform
     environment: dev
+    app.kubernetes.io/name: autofix-demo
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -19,6 +20,7 @@ metadata:
     owner: platform
     team: platform
     environment: dev
+    app.kubernetes.io/name: test-no-memory-limit
 spec:
   replicas: 2
   selector:
@@ -67,6 +69,7 @@ spec:
             initialDelaySeconds: 10
             periodSeconds: 10
             failureThreshold: 30
+          imagePullPolicy: IfNotPresent
       template:
         spec:
           imagePullSecrets:
