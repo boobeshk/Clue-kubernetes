@@ -26,7 +26,6 @@ spec:
             - '-listen=:5000'
           ports:
             - containerPort: 5000
-        
           securityContext:
             runAsNonRoot: true
             runAsUser: 1000
@@ -52,6 +51,13 @@ spec:
             initialDelaySeconds: 10
             periodSeconds: 10
             failureThreshold: 30
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 256Mi
   replicas: 2
 ---
 apiVersion: v1
